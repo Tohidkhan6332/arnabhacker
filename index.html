@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARNAB DAS | Hacker Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        /* Loading Screen Styles */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0a0f1f;
+            color: #00aaff;
+            font-family: "Poppins", sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        #loading-screen h1 {
+            font-size: 2.5rem;
+            color: #3cbfff;
+            margin-bottom: 0.5rem;
+        }
+        
+        #loading-screen p {
+            color: #bbb;
+            font-size: 1.1rem;
+            margin: 0.2em 0 1em;
+        }
+        
+        .progress-container {
+            width: 80%;
+            max-width: 400px;
+            height: 10px;
+            background: #1c1f2b;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1em;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00aaff, #3cf3ff);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .percent {
+            font-size: 2.5rem;
+            color: #3cf3ff;
+            margin-top: 0.5em;
+        }
+
+        /* Main Website Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        :root {
+            --primary: #00ff00;
+            --secondary: #00ccff;
+            --accent: #ff00ff;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #f0f0f0;
+            --gray: #333;
+            --light-gray: #888;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: rgba(10, 10, 10, 0.8);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background-color: rgba(15, 15, 15, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+            border: 1px solid var(--gray);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        /* Terminal Section */
+        .terminal {
+            background-color: var(--darker);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            border: 1px solid var(--primary);
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .terminal-title {
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .close {
+            background-color: #ff5f56;
+        }
+
+        .minimize {
+            background-color: #ffbd2e;
+        }
+
+        .maximize {
+            background-color: #27ca3f;
+        }
+
+        .terminal-content {
+            color: var(--light);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .prompt {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2rem;
+            background-color: var(--primary);
+            margin-left: 0.2rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Code Editor */
+        .code-editor {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .editor-header {
+            background-color: #2d2d2d;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .editor-title {
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+
+        .editor-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .editor-control {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .editor-content {
+            padding: 1rem;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        pre {
+            margin: 0;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Skills Matrix */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .skill-item {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--gray);
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .skill-name {
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .project-card {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--gray);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .project-link:hover {
+            color: var(--primary);
+        }
+
+        /* Blog */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .blog-card {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--gray);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-title {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-excerpt {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--light-gray);
+            font-size: 0.8rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(10, 10, 10, 0.9);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--gray);
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-link:hover {
+            color: var(--primary);
+        }
+
+        .contact-info {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+
+        .copyright {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Floating Buttons */
+        .floating-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .ai-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+        }
+
+        .music-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .video-btn {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        /* Date & Time */
+        .datetime {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(10, 10, 10, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: var(--light);
+            border: 1px solid var(--gray);
+            z-index: 99;
+        }
+
+        /* Media Controls */
+        .media-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .media-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+        }
+
+        .media-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+        }
+
+        .pause-btn {
+            background: linear-gradient(135deg, #ff9900, #ff6600);
+        }
+
+        .stop-btn {
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+        }
+
+        .video-play-btn {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        /* Media Players */
+        .media-player {
+            position: fixed;
+            bottom: 100px;
+            left: 2rem;
+            background-color: rgba(10, 10, 10, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            border: 1px solid var(--primary);
+            z-index: 98;
+            display: none;
+        }
+
+        .media-player.active {
+            display: block;
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .close-player {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .audio-player, .video-player {
+            width: 300px;
+        }
+
+        .video-player video {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .audio-controls, .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .control-btn {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid var(--gray);
+            color: var(--light);
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        /* GitHub Integration */
+        .github-projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .github-project {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid var(--gray);
+            transition: all 0.3s;
+        }
+
+        .github-project:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .github-project h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .github-project p {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .github-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--light-gray);
+        }
+
+        .github-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(10, 10, 10, 0.95);
+                padding: 1rem;
+                border-top: 1px solid var(--gray);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .floating-buttons, .media-controls {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .floating-btn, .media-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .datetime {
+                position: static;
+                margin-top: 1rem;
+                text-align: center;
+            }
+
+            main {
+                margin-top: 60px;
+                padding: 1rem;
+            }
+
+            section {
+                padding: 1rem;
+            }
+
+            .media-player {
+                left: 1rem;
+                bottom: 80px;
+            }
+
+            .audio-player, .video-player {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <h1>Arnab Das Inc</h1>
+        <p>The Epitome of Technology</p>
+        <p>Connecting Networks</p>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="percent" id="percent">0%</div>
+    </div>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Date & Time -->
+    <div class="datetime" id="datetime"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">ARNAB_DAS</div>
+            <nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-links" id="navLinks">
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#github">GitHub</a>
+                    <a href="#blog">Blog</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home">
+            <h1>Terminal Introduction</h1>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-title">terminal@arnabdas:~</div>
+                    <div class="terminal-controls">
+                        <div class="control close"></div>
+                        <div class="control minimize"></div>
+                        <div class="control maximize"></div>
+                    </div>
+                </div>
+                <div class="terminal-content" id="terminalContent">
+                    <!-- Terminal content will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <h1>About Me</h1>
+            <div class="about-content">
+                <div class="profile">
+                    <img src="https://o.uguu.se/YOthbVML.jpg" alt="ARNAB DAS" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 3px solid var(--primary);">
+                    <h2>ARNAB DAS</h2>
+                    <p style="color: var(--light-gray); margin-bottom: 1rem;">Full Stack Developer & Cybersecurity Enthusiast</p>
+                    <p>I'm a passionate developer from Kolkata, India, with expertise in web development, cybersecurity, and AI technologies. I love creating innovative solutions and exploring new technologies.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Editor Section -->
+        <section id="code-editor">
+            <h1>Live Code Editor</h1>
+            <div class="code-editor">
+                <div class="editor-header">
+                    <div class="editor-title">editor.js</div>
+                    <div class="editor-controls">
+                        <div class="editor-control" style="background-color: #ff5f56;"></div>
+                        <div class="editor-control" style="background-color: #ffbd2e;"></div>
+                        <div class="editor-control" style="background-color: #27ca3f;"></div>
+                    </div>
+                </div>
+                <div class="editor-content">
+                    <pre><code class="language-javascript" id="codeEditor">// Welcome to my live code editor
+// Try editing this code!
+
+function greet(name) {
+    return `Hello, ${name}! Welcome to my portfolio.`;
+}
+
+function calculate(a, b, operation) {
+    switch(operation) {
+        case 'add':
+            return a + b;
+        case 'subtract':
+            return a - b;
+        case 'multiply':
+            return a * b;
+        case 'divide':
+            return a / b;
+        default:
+            return 'Invalid operation';
+    }
+}
+
+// Example usage
+console.log(greet('Visitor'));
+console.log(calculate(10, 5, 'add'));</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills">
+            <h1>Skills Matrix</h1>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <i class="fab fa-html5 skill-icon"></i>
+                    <div class="skill-name">HTML5</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-css3-alt skill-icon"></i>
+                    <div class="skill-name">CSS3</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-js skill-icon"></i>
+                    <div class="skill-name">JavaScript</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-react skill-icon"></i>
+                    <div class="skill-name">React</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-node-js skill-icon"></i>
+                    <div class="skill-name">Node.js</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-python skill-icon"></i>
+                    <div class="skill-name">Python</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-database skill-icon"></i>
+                    <div class="skill-name">MySQL</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-git-alt skill-icon"></i>
+                    <div class="skill-name">Git</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-shield-alt skill-icon"></i>
+                    <div class="skill-name">Cybersecurity</div>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-robot skill-icon"></i>
+                    <div class="skill-name">AI/ML</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <h1>Project Showcase</h1>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/300x180/333/00ff00?text=Secure+Chat" alt="Project 1" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Secure Chat Application</h3>
+                        <p class="project-description">A real-time encrypted messaging app with end-to-end encryption and self-destructing messages.</p>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="#" class="project-link"><i class="fab fa-github"></i> Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/300x180/333/00ccff?text=AI+Security" alt="Project 2" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">AI-Powered Threat Detection</h3>
+                        <p class="project-description">Machine learning system for detecting cybersecurity threats in network traffic.</p>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="#" class="project-link"><i class="fab fa-github"></i> Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/300x180/333/ff00ff?text=Blockchain+Voting" alt="Project 3" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Blockchain Voting System</h3>
+                        <p class="project-description">Decentralized voting platform using blockchain technology for secure and transparent elections.</p>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="#" class="project-link"><i class="fab fa-github"></i> Source Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GitHub Integration -->
+        <section id="github">
+            <h1>GitHub Projects</h1>
+            <div class="github-projects" id="githubProjects">
+                <!-- GitHub projects will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog">
+            <h1>Latest Articles</h1>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/300x180/333/00ff00?text=Zero+Day" alt="Blog 1" class="blog-image">
+                    <div class="blog-content">
+                        <h3 class="blog-title">Understanding Zero-Day Vulnerabilities</h3>
+                        <p class="blog-excerpt">An in-depth look at zero-day vulnerabilities, how they're discovered, and mitigation strategies.</p>
+                        <div class="blog-meta">
+                            <span>June 15, 2023</span>
+                            <span>8 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/300x180/333/00ccff?text=Secure+APIs" alt="Blog 2" class="blog-image">
+                    <div class="blog-content">
+                        <h3 class="blog-title">Building Secure APIs with Node.js</h3>
+                        <p class="blog-excerpt">Best practices for designing and implementing secure RESTful APIs using Node.js and Express.</p>
+                        <div class="blog-meta">
+                            <span>May 22, 2023</span>
+                            <span>12 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <img src="https://via.placeholder.com/300x180/333/ff00ff?text=AI+Cybersecurity" alt="Blog 3" class="blog-image">
+                    <div class="blog-content">
+                        <h3 class="blog-title">The Future of AI in Cybersecurity</h3>
+                        <p class="blog-excerpt">Exploring how artificial intelligence is revolutionizing threat detection and cybersecurity practices.</p>
+                        <div class="blog-meta">
+                            <span>April 10, 2023</span>
+                            <span>10 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h1>Get In Touch</h1>
+            <div class="contact-content">
+                <p style="margin-bottom: 1.5rem;">Feel free to reach out to me for collaborations, projects, or just to say hello!</p>
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> Email: arnabdas78@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> Phone: +91 6291442697</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Location: Kolkata, India</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://github.com/arnabdas789" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1B7tMJL2Nd/" class="social-link" target="_blank">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/arnabdas789/" class="social-link" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/arnab-das-789/" class="social-link" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+            <div class="copyright">
+                &copy; 2026 ARNAB DAS. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <div class="floating-buttons">
+        <button class="floating-btn ai-btn" id="aiBtn" title="AI Assistant">
+            <i class="fas fa-robot"></i>
+        </button>
+        <button class="floating-btn whatsapp-btn" id="whatsappBtn" title="Contact on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+        <button class="floating-btn music-btn" id="musicBtn" title="Music Player">
+            <i class="fas fa-music"></i>
+        </button>
+        <button class="floating-btn video-btn" id="videoBtn" title="Video Player">
+            <i class="fas fa-video"></i>
+        </button>
+    </div>
+
+    <!-- Media Controls -->
+    <div class="media-controls">
+        <button class="media-btn play-btn" id="playMusicBtn" title="Play Music">
+            <i class="fas fa-play"></i>
+        </button>
+        <button class="media-btn pause-btn" id="pauseMusicBtn" title="Pause Music">
+            <i class="fas fa-pause"></i>
+        </button>
+        <button class="media-btn stop-btn" id="stopMusicBtn" title="Stop Music">
+            <i class="fas fa-stop"></i>
+        </button>
+        <button class="media-btn video-play-btn" id="playVideoBtn" title="Play Video">
+            <i class="fas fa-film"></i>
+        </button>
+    </div>
+
+    <!-- Audio Player -->
+    <div class="media-player audio-player" id="audioPlayer">
+        <div class="player-header">
+            <span>Music Player</span>
+            <button class="close-player" id="closeAudioPlayer">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <audio id="audioElement" controls style="width: 100%;">
+            <source src="https://files.catbox.moe/5zf4p2.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <div class="audio-controls">
+            <button class="control-btn" id="prevTrackBtn">
+                <i class="fas fa-backward"></i>
+            </button>
+            <button class="control-btn" id="nextTrackBtn">
+                <i class="fas fa-forward"></i>
+            </button>
+            <button class="control-btn" id="volumeUpBtn">
+                <i class="fas fa-volume-up"></i>
+            </button>
+            <button class="control-btn" id="volumeDownBtn">
+                <i class="fas fa-volume-down"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Video Player -->
+    <div class="media-player video-player" id="videoPlayer">
+        <div class="player-header">
+            <span>Video Player</span>
+            <button class="close-player" id="closeVideoPlayer">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <video id="videoElement" controls style="width: 100%;">
+            <source src="https://files.catbox.moe/ucj1dp.mp4" type="video/mp4">
+            Your browser does not support the video element.
+        </video>
+        <div class="video-controls">
+            <button class="control-btn" id="fullscreenBtn">
+                <i class="fas fa-expand"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Loading Screen Animation
+        let progress = 0;
+        const progressBar = document.getElementById("progress-bar");
+        const percentText = document.getElementById("percent");
+        const loadingScreen = document.getElementById("loading-screen");
+
+        const interval = setInterval(() => {
+            progress += 1;
+            progressBar.style.width = progress + "%";
+            percentText.textContent = progress + "%";
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                // Fade out loading screen
+                loadingScreen.style.opacity = "0";
+                setTimeout(() => {
+                    loadingScreen.style.display = "none";
+                }, 500);
+            }
+        }, 50);
+
+        // Initialize particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ff00" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00ccff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+
+        // Terminal Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalContent = document.getElementById('terminalContent');
+            const lines = [
+                { text: "Welcome to ARNAB DAS Portfolio", delay: 500 },
+                { text: "Initializing system...", delay: 800 },
+                { text: "Loading user profile...", delay: 600 },
+                { text: "Connecting to GitHub...", delay: 700 },
+                { text: "System ready!", delay: 500 },
+                { text: "> whoami", delay: 300 },
+                { text: "arnab_das", delay: 400 },
+                { text: "> location", delay: 300 },
+                { text: "Kolkata, India", delay: 400 },
+                { text: "> skills", delay: 300 },
+                { text: "Full Stack Development, Cybersecurity, AI/ML", delay: 500 },
+                { text: "> contact", delay: 300 },
+                { text: "Email: arnabdas78@gmail.com", delay: 400 },
+                { text: "Phone: +91 6291442697", delay: 400 },
+                { text: "> _", delay: 200, cursor: true }
+            ];
+
+            let currentLine = 0;
+            
+            function typeLine() {
+                if (currentLine >= lines.length) return;
+                
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                
+                if (lines[currentLine].text.startsWith('>')) {
+                    const prompt = document.createElement('span');
+                    prompt.className = 'prompt';
+                    prompt.textContent = 'visitor@portfolio:~$';
+                    line.appendChild(prompt);
+                }
+                
+                const text = document.createElement('span');
+                text.textContent = lines[currentLine].text.startsWith('>') ? 
+                    lines[currentLine].text.substring(2) : lines[currentLine].text;
+                line.appendChild(text);
+                
+                if (lines[currentLine].cursor) {
+                    const cursor = document.createElement('span');
+                    cursor.className = 'cursor';
+                    line.appendChild(cursor);
+                }
+                
+                terminalContent.appendChild(line);
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+                
+                currentLine++;
+                setTimeout(typeLine, lines[currentLine - 1].delay);
+            }
+            
+            typeLine();
+        });
+
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Date & Time
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZone: 'Asia/Kolkata'
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('en-IN', options) + ' IST';
+        }
+        
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // AI Assistant Button
+        document.getElementById('aiBtn').addEventListener('click', function() {
+            window.open('https://tohidai.vercel.app', '_blank');
+        });
+
+        // WhatsApp Button
+        document.getElementById('whatsappBtn').addEventListener('click', function() {
+            window.open('https://wa.me/916291442697', '_blank');
+        });
+
+        // Music Player Controls
+        const audioElement = document.getElementById('audioElement');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const musicBtn = document.getElementById('musicBtn');
+        
+        musicBtn.addEventListener('click', function() {
+            audioPlayer.classList.toggle('active');
+        });
+        
+        document.getElementById('closeAudioPlayer').addEventListener('click', function() {
+            audioPlayer.classList.remove('active');
+            audioElement.pause();
+        });
+        
+        document.getElementById('playMusicBtn').addEventListener('click', function() {
+            audioElement.play();
+        });
+        
+        document.getElementById('pauseMusicBtn').addEventListener('click', function() {
+            audioElement.pause();
+        });
+        
+        document.getElementById('stopMusicBtn').addEventListener('click', function() {
+            audioElement.pause();
+            audioElement.currentTime = 0;
+        });
+        
+        document.getElementById('prevTrackBtn').addEventListener('click', function() {
+            // In a real implementation, this would switch to previous track
+            audioElement.currentTime = 0;
+        });
+        
+        document.getElementById('nextTrackBtn').addEventListener('click', function() {
+            // In a real implementation, this would switch to next track
+            // For demo, we'll just restart the current track
+            audioElement.currentTime = 0;
+            audioElement.play();
+        });
+        
+        document.getElementById('volumeUpBtn').addEventListener('click', function() {
+            if (audioElement.volume < 1) audioElement.volume += 0.1;
+        });
+        
+        document.getElementById('volumeDownBtn').addEventListener('click', function() {
+            if (audioElement.volume > 0) audioElement.volume -= 0.1;
+        });
+
+        // Video Player Controls
+        const videoElement = document.getElementById('videoElement');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoBtn = document.getElementById('videoBtn');
+        
+        videoBtn.addEventListener('click', function() {
+            videoPlayer.classList.toggle('active');
+        });
+        
+        document.getElementById('closeVideoPlayer').addEventListener('click', function() {
+            videoPlayer.classList.remove('active');
+            videoElement.pause();
+        });
+        
+        document.getElementById('playVideoBtn').addEventListener('click', function() {
+            videoPlayer.classList.add('active');
+            videoElement.play();
+        });
+        
+        document.getElementById('fullscreenBtn').addEventListener('click', function() {
+            if (videoElement.requestFullscreen) {
+                videoElement.requestFullscreen();
+            } else if (videoElement.webkitRequestFullscreen) {
+                videoElement.webkitRequestFullscreen();
+            } else if (videoElement.msRequestFullscreen) {
+                videoElement.msRequestFullscreen();
+            }
+        });
+
+        // GitHub Integration (Mock Data)
+        document.addEventListener('DOMContentLoaded', function() {
+            const githubProjects = document.getElementById('githubProjects');
+            
+            // Mock GitHub projects data
+            const projects = [
+                {
+                    name: "Secure Chat App",
+                    description: "End-to-end encrypted messaging application with real-time capabilities.",
+                    language: "JavaScript",
+                    stars: 24,
+                    forks: 8
+                },
+                {
+                    name: "AI Threat Detection",
+                    description: "Machine learning system for identifying cybersecurity threats in network traffic.",
+                    language: "Python",
+                    stars: 42,
+                    forks: 15
+                },
+                {
+                    name: "Blockchain Voting",
+                    description: "Decentralized voting platform built on blockchain technology.",
+                    language: "Solidity",
+                    stars: 31,
+                    forks: 12
+                },
+                {
+                    name: "Portfolio Website",
+                    description: "My personal portfolio website with hacker theme and interactive elements.",
+                    language: "HTML/CSS/JS",
+                    stars: 18,
+                    forks: 5
+                }
+            ];
+            
+            projects.forEach(project => {
+                const projectElement = document.createElement('div');
+                projectElement.className = 'github-project';
+                projectElement.innerHTML = `
+                    <h3>${project.name}</h3>
+                    <p>${project.description}</p>
+                    <div class="github-stats">
+                        <div class="github-stat">
+                            <i class="fas fa-code"></i>
+                            <span>${project.language}</span>
+                        </div>
+                        <div class="github-stat">
+                            <i class="fas fa-star"></i>
+                            <span>${project.stars}</span>
+                        </div>
+                        <div class="github-stat">
+                            <i class="fas fa-code-branch"></i>
+                            <span>${project.forks}</span>
+                        </div>
+                    </div>
+                `;
+                githubProjects.appendChild(projectElement);
+            });
+        });
+
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize Syntax Highlighting
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
